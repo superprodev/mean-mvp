@@ -4,17 +4,19 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 
+const guestRouter = require('./api/guest');
+const adminRouter = require('./api/admin');
+
 const PORT = 8000;
-const db = "mongodb://";
+const db = "mongodb://localhost:27017/mvp";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
 
-app.use((req, res) => {
-    res.send({ msg: "Hello World!"});
-})
+app.use("/guest", guestRouter);
+app.use("/admin", adminRouter);
 
 mongoose.connect(db).then(() => {
     console.log("MongoDB is connected.");
