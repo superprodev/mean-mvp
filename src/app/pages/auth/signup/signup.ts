@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { injectDispatch } from '@reduxjs/angular-redux';
+import { signup } from '../../../store/auth-slice';
 
 @Component({
   selector: 'app-signup',
@@ -24,6 +26,8 @@ export class Signup {
 
   formBuilder = inject(FormBuilder);
   http = inject(HttpClient);
+
+  dispatch = injectDispatch();
 
   form = this.formBuilder.group({
     firstname: ['', [Validators.required, Validators.minLength(2)]],
@@ -55,8 +59,9 @@ export class Signup {
     delete (payload as any).confirmPassword;
 
     // TODO: Call your register API here
-    this.http.post("/auth/signup", this.form.value).subscribe(data => {
-      console.log(data);
+    this.http.post("/auth/signup", this.form.value).subscribe((data: any) => {
+      this.isSubmitting = false;
+      this.dispatch(signup(data.user))
     })
   }
 }

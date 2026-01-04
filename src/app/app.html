@@ -251,29 +251,23 @@
     <div class="divider" role="separator" aria-label="Divider"></div>
     <div class="right-side">
       <div class="pill-group">
-          @if ( this.signed() ) {
+          @if ( this.auth().signed ) {
           <el-dropdown class="inline-block">
             <button
               class="inline-flex w-full gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring-1 inset-ring-gray-300 hover:bg-gray-50">
               <img src="https://www.w3schools.com/howto/img_avatar.png" class="inline-flex size-8 rounded-[50%]"/>
-              <span class="flex place-items-center">User Name</span>
+              <span class="flex place-items-center">{{`${this.auth().firstname} ${this.auth().lastname}`}}</span>
             </button>
           
             <el-menu anchor="bottom end" popover
               class=" origin-top-right rounded-md bg-white shadow-lg outline-1 outline-black/5 transition transition-discrete [--anchor-gap:--spacing(2)] data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
               <div class="py-1">
-                <a href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Account
-                  settings</a>
-                <a href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Support</a>
-                <a href="#"
-                  class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">License</a>
-                <form action="#" method="POST">
-                  <button type="submit"
-                    class="block w-full px-4 py-2 text-left text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">Sign
-                    out</button>
-                </form>
+                <a routerLink="/settings" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">
+                  Account Settings
+                </a>
+                <button class="block w-full px-4 py-2 text-left text-sm text-gray-700 focus:bg-gray-100 focus:text-gray-900 focus:outline-hidden">
+                    Sign out
+                </button>
               </div>
             </el-menu>
           </el-dropdown>

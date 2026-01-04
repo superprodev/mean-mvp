@@ -8,11 +8,14 @@ import { provideRedux } from '@reduxjs/angular-redux';
 import { store } from './store';
 import { baseUrlInterceptor } from './http/interceptor';
 
+import { provideReduxPersistInit } from './store/persist.initializer';
+
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes), provideClientHydration(withEventReplay()),
     provideHttpClient(withJsonpSupport(), withFetch(), withInterceptors([baseUrlInterceptor])),
     provideRedux({ store })
-]
+  ]
 };

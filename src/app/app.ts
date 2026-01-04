@@ -13,6 +13,6 @@ import { RootState } from './store';
 export class App {
   protected readonly title = signal('mean-mvp');
 
-  signed = injectSelector((state: RootState) => state.auth.signed)
+  auth = injectSelector((state: RootState) => state.auth)
 
 }

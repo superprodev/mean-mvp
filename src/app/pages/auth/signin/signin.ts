@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { injectDispatch } from '@reduxjs/angular-redux';
+import { signin } from '../../../store/auth-slice';
 
 
 @Component({
@@ -17,7 +19,10 @@ export class Signin {
   showPassword = false;
   
   http = inject(HttpClient);
+  router = inject(Router);
   formBuilder = inject(FormBuilder);
+
+  dispatch = injectDispatch();
 
   form = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -34,12 +39,10 @@ export class Signin {
     this.isSubmitting = true;
 
     // TODO: Call your auth API here
-    setTimeout(() => {
-      this.http.get("http://localhost:8000/test").subscribe((data) => {
-        console.log(data);
-      });
+    this.http.post("/auth/signin", this.form.value).subscribe((data: any) => {
       this.isSubmitting = false;
-      console.log('Sign in payload:', this.form.value);
-    }, 800);
+      this.dispatch(signin(data.user));
+      this.router.navigate(["/dashboard"]);
+    });
   }
 }

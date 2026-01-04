@@ -87,4 +87,17 @@ router.post("/signup", async (req, res) => {
     }
 });
 
+router.post("/signin", async (req, res) => {
+    let { email, password } = req.body;
+    let user = await UserModel.findOne({ email });
+    if(user != null && user.password === password){
+        res.send({
+            success: true,
+            user
+        })
+    } else {
+        res.send({success: false});
+    }
+});
+
 module.exports = router;
