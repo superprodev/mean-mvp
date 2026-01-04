@@ -17,6 +17,11 @@ app.use(cors());
 
 app.use("/guest", guestRouter);
 app.use("/admin", adminRouter);
+app.get("/test", (req, res) => {
+    res.send({
+        msg: "Hello World!"
+    });
+})
 
 mongoose.connect(db).then(() => {
     console.log("MongoDB is connected.");
