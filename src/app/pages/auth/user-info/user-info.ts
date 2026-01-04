@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, effect } from '@angular/core';
+import { Component, inject, effect, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { injectDispatch, injectSelector } from '@reduxjs/angular-redux';
@@ -14,7 +14,7 @@ import { RootState } from '../../../store';
   styleUrl: './user-info.css',
 })
 export class UserInfo {
-  isSubmitting = false;
+  isSubmitting = signal(false);
   showPassword = false;
 
   plans: Array<{ id: number; name: string; desc: string }> = [
@@ -45,15 +45,17 @@ export class UserInfo {
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     const payload = { ...this.form.value };
     delete (payload as any).confirmPassword;
 
     // TODO: Call your register API here
     this.http.post("/auth/update", this.form.value).subscribe((data: any) => {
-      this.isSubmitting = false;
-      this.dispatch(update(data.user))
+      this.isSubmitting.set(false);
+      if(data.success){
+        this.dispatch(update(data.user))
+      }
     })
   }
 }

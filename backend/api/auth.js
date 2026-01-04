@@ -13,7 +13,7 @@ const transporter = mailer.createTransport({
     user: smtp_user, // your full outlook email
     pass: smtp_pass, // password or app password
   },
-  requireTLS: true,
+  requireTLS: true
 });
 
 transporter.verify((err) => {
@@ -63,7 +63,7 @@ router.post("/verify-code", async (req, res) => {
         user.verified = true;
         user.active = true;
         await user.save();
-        res.send({success: true});
+        res.send({success: true, user});
     } else {
         res.send({success: false});
     }
@@ -98,6 +98,15 @@ router.post("/signin", async (req, res) => {
     } else {
         res.send({success: false});
     }
+});
+
+router.post("/update", async (req, res) => {
+    let { email } = req.body;
+    let user = await UserModel.findOneAndUpdate({ email }, { ...req.body });
+    res.send({
+        success: true,
+        user: { ...user, ...req.body }
+    })
 });
 
 module.exports = router;
