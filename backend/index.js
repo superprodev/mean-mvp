@@ -4,7 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 
-const guestRouter = require('./api/guest');
+const authRouter = require('./api/auth');
 const adminRouter = require('./api/admin');
 
 const PORT = 8000;
@@ -15,13 +15,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
 
-app.use("/guest", guestRouter);
+app.use("/auth", authRouter);
 app.use("/admin", adminRouter);
-app.get("/test", (req, res) => {
-    res.send({
-        msg: "Hello World!"
-    });
-})
 
 mongoose.connect(db).then(() => {
     console.log("MongoDB is connected.");

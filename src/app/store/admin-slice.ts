@@ -9,8 +9,8 @@ const initialState: CounterState = {
   value: 0,
 }
 
-export const counterSlice = createSlice({
-  name: 'counter',
+export const adminSlice = createSlice({
+  name: 'admin',
   initialState,
   reducers: {
     increment: (state) => {
@@ -25,6 +25,6 @@ export const counterSlice = createSlice({
   },
 })
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { increment, decrement, incrementByAmount } = adminSlice.actions
 
-export default counterSlice.reducer
+export default adminSlice.reducer
