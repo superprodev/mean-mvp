@@ -39,6 +39,11 @@ const UserSchema = new Schema({
     active: {
         type: Boolean,
         default: false
+    },
+
+    conversations: {
+        type: Array,
+        default: []
     }
 });
 

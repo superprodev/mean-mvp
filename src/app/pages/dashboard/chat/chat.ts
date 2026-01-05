@@ -8,6 +8,8 @@ import { RootState } from '../../../store';
 import { fetchUsers } from '../../../store/chat-slice';
 import { UserState, initialState } from '../../../store/auth-slice';
 
+import { io, Socket } from 'socket.io-client';
+
 @Component({
   selector: 'app-chat',
   imports: [CommonModule, ReactiveFormsModule],
@@ -17,6 +19,7 @@ import { UserState, initialState } from '../../../store/auth-slice';
 export class Chat implements OnInit {
   router = inject(Router);
   http = inject(HttpClient);
+  socket : Socket | null = null;
 
   selectedUser = signal<UserState>(initialState);
 
@@ -35,7 +38,38 @@ export class Chat implements OnInit {
     });
   }
 
-  onSend(){
-    
+  connect(){
+    if(this.socket) return;
+
+    this.socket = io('http://localhost:3000', {
+      transports: ['websocket'],
+      auth: { email: this.email() },
+    });
+
+    this.socket.on("message:new", ({ message }) => {
+      console.log(message);
+    })
+
+    this.socket.on('connect', () => {
+      console.log('socket connected', this.socket!.id);
+
+      this.socket!.emit('conversation:open', {
+        convId: '342343u',
+        participant: this.selectedUser().email,
+      });
+    });
+  }
+
+  onSend(input: HTMLInputElement){
+    this.connect();
+
+    if(this.socket?.connected){
+      this.socket!.emit("message:send", { convId: "342343u", to: this.selectedUser().email, content: input.value})
+    }
+    input.value = "";
+  }
+
+  onSelect(user: UserState){
+    this.selectedUser.set(user);
   }
 }

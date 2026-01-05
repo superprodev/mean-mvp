@@ -117,19 +117,7 @@ router.post("/update", async (req, res) => {
         success: true,
         user: { ...user, ...req.body }
     })
-});
-
-router.post("/message", async (req, res) => {
-    let { from, to, content, date } = req.body;
-    let message = new MessageModel({
-        from, to, content, date
-    });
-    await message.save();
-
-    res.send({
-        success: true
-    })
-});
+})
 
 router.post("/udpate-msg", async (req, res) => {
     let { _id, content } = req.body;

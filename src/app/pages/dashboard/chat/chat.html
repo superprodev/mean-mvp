@@ -15,6 +15,7 @@
             <!-- Conversation Item (Active) -->
             @for( user of this.users(); track user.email ){
             <div
+                (click)="onSelect(user)"
                 [ngClass]="['flex', 'items-center', 'gap-3', 'px-4', 'py-3', 'cursor-pointer', user.email === this.selectedUser().email ? 'bg-slate-900' : 'hover:bg-slate-900/60']">
                 <div class="relative">
                     <div class="h-11 w-11 rounded-full bg-slate-700"></div>
@@ -88,15 +89,16 @@
             </div>
 
             <!-- Input -->
-            <form class="flex items-center gap-3 px-6 py-4 border-t border-white/10">
+            <div class="flex items-center gap-3 px-6 py-4 border-t border-white/10">
                 <input type="text" placeholder="Type your message..."
+                    #messageInput
                     class="flex-1 rounded-xl bg-slate-900 border border-white/10 px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" />
 
-                <button (click)="this.onSend()"
+                <button (click)="this.onSend(messageInput)"
                     class="rounded-xl bg-indigo-600 px-6 py-3 text-sm font-medium hover:bg-indigo-500 transition">
                     Send
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 
