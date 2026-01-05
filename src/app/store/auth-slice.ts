@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-
+import { Message } from './chat-slice'
 
 export interface UserState {
   email: string,
@@ -12,10 +12,14 @@ export interface UserState {
   plan: number,
   active: boolean,
   verified: boolean,
-  signed: boolean
+  signed: boolean,
+  
+  online: boolean,
+  typing: boolean,
+  messages: Array<Message>
 }
 
-const initialState: UserState = {
+export const initialState: UserState = {
   email: "",
   password: "",
   firstname: "",
@@ -25,7 +29,11 @@ const initialState: UserState = {
   plan: 0,
   active: false,
   verified: false,
-  signed: false
+  signed: false,
+
+  online: true,
+  typing: false,
+  messages: [],
 }
 
 export const authSlice = createSlice({

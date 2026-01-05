@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { injectDispatch } from '@reduxjs/angular-redux';
 import { signup } from '../../../store/auth-slice';
@@ -14,7 +14,7 @@ import { signup } from '../../../store/auth-slice';
 })
 
 export class Signup {
-  isSubmitting = false;
+  isSubmitting = signal(false);
   showPassword = false;
   showConfirm = false;
 
@@ -26,6 +26,7 @@ export class Signup {
 
   formBuilder = inject(FormBuilder);
   http = inject(HttpClient);
+  router = inject(Router);
 
   dispatch = injectDispatch();
 
@@ -53,15 +54,16 @@ export class Signup {
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     const payload = { ...this.form.value };
     delete (payload as any).confirmPassword;
 
     // TODO: Call your register API here
     this.http.post("/auth/signup", this.form.value).subscribe((data: any) => {
-      this.isSubmitting = false;
-      this.dispatch(signup(data.user))
+      this.isSubmitting.set(false);
+      this.dispatch(signup(data.user));
+      this.router.navigate(["/signin"]);
     })
   }
 }

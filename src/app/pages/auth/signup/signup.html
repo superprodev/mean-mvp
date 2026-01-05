@@ -166,10 +166,10 @@
         <!-- Submit -->
         <button
           type="submit"
-          [disabled]="isSubmitting"
+          [disabled]="isSubmitting()"
           class="w-full rounded-xl bg-white text-slate-950 font-medium py-3 hover:bg-slate-100 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          @if (!isSubmitting) { <span>Create account</span> }
+          @if (!isSubmitting()) { <span>Create account</span> }
           @else { <span>Creating…</span> }
         </button>
 

@@ -14,10 +14,12 @@ import { storage } from './storage'; // localStorage
 
 import authReducer from './auth-slice';
 import adminReducer from './admin-slice';
+import chatReducer from './chat-slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   settings: adminReducer,
+  chat: chatReducer,
 });
 
 const persistConfig = {

@@ -7,6 +7,8 @@ const app = express();
 const authRouter = require('./api/auth');
 const adminRouter = require('./api/admin');
 
+const chatServer = require('./chat');
+
 const PORT = 8000;
 const db = "mongodb://localhost:27017/mvp";
 
@@ -30,3 +32,5 @@ app.listen(PORT, (err) => {
     }
     console.log(`Server is running at ${PORT}`);
 })
+
+chatServer.listen(3000, () => console.log("Socket.IO is running at 3000"));

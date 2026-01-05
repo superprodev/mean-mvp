@@ -1,6 +1,7 @@
 const mailer = require('nodemailer');
 const router = require('express').Router();
 const UserModel = require('../models/user');
+const MessageModel = require('../models/message');
 
 const smtp_user = "james@82cfcccfd82ac9a7.maileroo.org"
 const smtp_pass = "1e7be787ed5af928bdda6647";
@@ -36,6 +37,15 @@ const sendMail = async (to, subject, text) => {
         text
     });
 }
+
+router.post("/users", async (req, res) => {
+    let { email } = req.body;
+    let users = await UserModel.find({});
+    res.send({
+        success:true,
+        users: users.filter((value) => value.email != email)
+    })
+})
 
 router.post("/send-code", async (req, res) => {
     let { email } = req.body;
@@ -108,5 +118,23 @@ router.post("/update", async (req, res) => {
         user: { ...user, ...req.body }
     })
 });
+
+router.post("/message", async (req, res) => {
+    let { from, to, content, date } = req.body;
+    let message = new MessageModel({
+        from, to, content, date
+    });
+    await message.save();
+
+    res.send({
+        success: true
+    })
+});
+
+router.post("/udpate-msg", async (req, res) => {
+    let { _id, content } = req.body;
+    await MessageModel.findByIdAndUpdate(_id, { content });
+    res.send({success: true});
+})
 
 module.exports = router;
