@@ -1,4 +1,4 @@
-import socket from 'socket.io';
+import { Server } from 'socket.io';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
@@ -9,9 +9,19 @@ import MessageModel from './models/message';
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
 
-const server = http.createServer(app);
+const globalForServer = globalThis as unknown as {
+  __httpServer?: http.Server;
+};
 
-const io = new socket.Server(server, {
+if (!globalForServer.__httpServer) {
+  const port = Number(process.env['PORT'] || 3000);
+
+  const server = http.createServer(app);
+
+  globalForServer.__httpServer = server;
+} 
+
+const io = new Server(globalForServer.__httpServer, {
   cors: { origin: true, credentials: true },
 });
 
@@ -58,4 +68,4 @@ io.on("connection", async (socket) => {
   socket.on("disconnect", () => console.log("disconnected:", socket.id));
 });
 
-export default server;
+export default globalForServer;

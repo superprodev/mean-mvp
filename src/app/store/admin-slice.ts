@@ -1,30 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { UserState } from './auth-slice'
 
-export interface CounterState {
-  value: number
+export interface AdminState {
+  users: Array<UserState>
 }
 
-const initialState: CounterState = {
-  value: 0,
+const initialState: AdminState = {
+  users: []
 }
 
 export const adminSlice = createSlice({
   name: 'admin',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
-    },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+    fetchUsers: (state, action: PayloadAction<number>) => {
+      //state.value += action.payload
     },
   },
 })
 
-export const { increment, decrement, incrementByAmount } = adminSlice.actions
+// export const { increment, decrement, incrementByAmount } = adminSlice.actions
 
 export default adminSlice.reducer

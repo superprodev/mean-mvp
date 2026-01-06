@@ -2,6 +2,7 @@ import mailer from 'nodemailer';
 import { Router } from 'express';
 import UserModel from './models/user';
 import MessageModel from './models/message';
+import chalk from 'chalk';
 
 const smtp_user = "james@82cfcccfd82ac9a7.maileroo.org"
 const smtp_pass = "1e7be787ed5af928bdda6647";
@@ -23,7 +24,7 @@ transporter.verify((err) => {
   if (err) {
     console.error('SMTP ERROR:', err);
   } else {
-    console.log('SMTP READY');
+    console.log(chalk.blue('SMTP READY'));
   }
 });
 

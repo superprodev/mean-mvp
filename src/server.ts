@@ -9,9 +9,11 @@ import { join } from 'node:path';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import chalk from 'chalk';
 
 import authRouter from '../api/auth';
 import adminRouter from '../api/admin';
+import chatServer from '../api/chat-server';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -67,8 +69,19 @@ app.use((req, res, next) => {
 
 const db = "mongodb://localhost:27017/mvp";
 mongoose.connect(db).then(() => {
-  console.log("MongoDB is connected...")
+  console.log(chalk.green("MongoDB is connected..."))
 }).catch((err) => console.log(err));
+
+/**
+ * Start socket.io chat server
+ */
+const { __httpServer } = chatServer;
+if (__httpServer && !__httpServer.listening) {
+  __httpServer.listen(3000, () => {
+    console.log(chalk.yellow("Socket.IO is running at 3000"));
+  });
+}
+
 
 /**
  * Start the server if this module is the main entry point, or it is ran via PM2.
