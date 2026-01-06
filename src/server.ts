@@ -6,11 +6,22 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+
+import authRouter from '../api/auth';
+import adminRouter from '../api/admin';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(cors());
 
 /**
  * Example Express Rest API endpoints can be defined here.
@@ -23,6 +34,9 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
+
+app.use("/api/auth", authRouter);
+app.use("/api/admin", adminRouter);
 
 /**
  * Serve static files from /browser
@@ -46,6 +60,15 @@ app.use((req, res, next) => {
     )
     .catch(next);
 });
+
+/**
+ * Connect mongoose
+ */
+
+const db = "mongodb://localhost:27017/mvp";
+mongoose.connect(db).then(() => {
+  console.log("MongoDB is connected...")
+}).catch((err) => console.log(err));
 
 /**
  * Start the server if this module is the main entry point, or it is ran via PM2.

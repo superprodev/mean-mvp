@@ -1,10 +1,12 @@
-const mailer = require('nodemailer');
-const router = require('express').Router();
-const UserModel = require('../models/user');
-const MessageModel = require('../models/message');
+import mailer from 'nodemailer';
+import { Router } from 'express';
+import UserModel from './models/user';
+import MessageModel from './models/message';
 
 const smtp_user = "james@82cfcccfd82ac9a7.maileroo.org"
 const smtp_pass = "1e7be787ed5af928bdda6647";
+
+const router = Router();
 
 const transporter = mailer.createTransport({
   host: "smtp.maileroo.com",
@@ -25,7 +27,7 @@ transporter.verify((err) => {
   }
 });
 
-const sendMail = async (to, subject, text) => {
+const sendMail = async (to: string, subject: string, text: string) => {
     return await transporter.sendMail({
         envelope: {
             from: 'no-reply@82cfcccfd82ac9a7.maileroo.org',
@@ -50,7 +52,13 @@ router.post("/users", async (req, res) => {
 router.post("/send-code", async (req, res) => {
     let { email } = req.body;
     let user = await UserModel.findOne({email});
-
+    if(user == null){
+        res.send({
+            success: false
+        });
+        return;
+    }
+    
     let random = Math.random() * 1e6;
     let code = random.toFixed(0).padStart(6, "0");
     let result = await sendMail(email, "Verify Email", `Verification Code ${code}`);
@@ -125,4 +133,4 @@ router.post("/udpate-msg", async (req, res) => {
     res.send({success: true});
 })
 
-module.exports = router;
+export default router;

@@ -7,8 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:mean-mvp": "node dist/mean-mvp/server/server.mjs",
-    "backend": "node backend/index.js"
+    "serve:ssr": "node dist/mean-mvp/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,
@@ -49,6 +48,7 @@
     "@tailwindcss/postcss": "^4.1.12",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
+    "@types/nodemailer": "^7.0.4",
     "cors": "^2.8.5",
     "jsdom": "^27.1.0",
     "mongoose": "^9.1.1",

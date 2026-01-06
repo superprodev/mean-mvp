@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from "mongoose";
 
 const MessageSchema = new Schema({
     convId: {
@@ -19,4 +18,4 @@ const MessageSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('messages', MessageSchema);
+export default mongoose.models["messages"] || mongoose.model('messages', MessageSchema);

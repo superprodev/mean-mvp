@@ -10,7 +10,6 @@ import { UserList } from './pages/admin/user-list/user-list';
 export const routes: Routes = [
     { path: "", pathMatch: "full", redirectTo: "dashboard" },
     { path: "admin/users", component: UserList },
-    { path: "admin/users/:id", component: UserInfo },
     { path: "signin", component: Signin },
     { path: "signup", component: Signup },
     { path: "settings", component: UserInfo },
